@@ -1,0 +1,138 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{truthtable}[2021/09/29 package for generating truth tables automatically using LuaTeX]
+
+
+
+
+\ProcessOptions\relax
+\@ifpackageloaded{luacode}{
+	\PackageWarningNoLine{truthtable}{Package luacode was already loaded}
+}{
+\RequirePackage{luacode}
+}
+
+\begin{luacode*}
+
+function Impl(a,b)
+	return (not a or b);
+end
+
+function Equiv(a,b)
+	return ((a and b) or ((not a) and (not b)));
+end
+
+function ComputeRows(header)
+	return 2^header
+end
+
+function Split(s, delimiter)
+    local result = {};
+    for match in (s..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match);
+    end
+    return result;
+end
+
+function EvaluateFormula(formula)
+	local parsedFormula = "function res() return( " .. string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(string.gsub(formula, " ", ""),">>","Impl"),"__","Equiv"),"!","not "),"&" ," and "),"|"," or "),";",",") .. " ) end";
+
+	chunk = load(parsedFormula);
+	chunk();
+	local result =  res();
+	return result;
+end
+
+function toBits(num)
+    local t = "" -- will contain the bits
+    while num>0 do
+        local rest = math.fmod(num,2)
+        if (rest == 1) then
+			t =  "1" .. t
+		else
+			t = "0" .. t 
+		end
+		
+        num=(num-rest)/2
+    end
+    return t;
+end
+
+function printTruthValue(expr, dTrue, dFalse)
+
+	local returnVal = ""
+
+	if (expr) then
+		returnVal = dTrue;
+	else
+		returnVal = dFalse;
+	end
+
+	return returnVal;
+end
+
+function parse(numberOfColumns, commaSepVariables, commaSepDisplayVariables, commaSepResultRows, commaSepResultDisplayRows, displayTrue, displayFalse)
+	local rows = ComputeRows(numberOfColumns);
+	local vrbls = Split(commaSepVariables, ",");
+	local dVrbls = Split(commaSepDisplayVariables, ",");
+	local resRows = Split(commaSepResultRows, ",");
+	local dResRows = Split(commaSepResultDisplayRows, ",");
+
+	local dHeader = string.gsub(commaSepDisplayVariables, ",", " & ") .. " & " .. string.gsub(commaSepResultDisplayRows, ",", " & ") .. " \\\\ \\hline";
+
+	if (not (numberOfColumns == #(vrbls) and numberOfColumns == #(dVrbls))) then
+		return("error");
+	end
+
+	local tableContent = dHeader;
+
+	for i = (rows - 1),0,-1
+	do
+		local bitString = toBits(i);
+
+		while #bitString < numberOfColumns do
+			bitString = "0" .. bitString
+		end
+
+		local wVrbls = commaSepVariables;
+		local wCommaSepRows = commaSepResultRows
+		for ii = 1,numberOfColumns
+		do
+			wVrbls = string.gsub(wVrbls, vrbls[ii], (string.sub(bitString,ii,ii) == "1" ) and "+" or "-" )
+			wCommaSepRows = string.gsub(wCommaSepRows, vrbls[ii], (string.sub(bitString,ii,ii) == "1" ) and "+" or "-" )
+		end
+
+
+		local aWVrbls = Split(string.gsub(string.gsub(wVrbls, "+", "true"),"-", "false"), ",");
+
+		local aWCommaSepRows = Split(string.gsub(string.gsub(wCommaSepRows, "+", "true"),"-", "false"), ",");
+
+		local row = "";
+
+		for c = 1,#(aWVrbls)
+		do
+			row = row .. printTruthValue(EvaluateFormula(aWVrbls[c]), displayTrue, displayFalse) .. " & ";
+		end
+
+		for c = 1,#(aWCommaSepRows)
+		do
+			row = row .. printTruthValue(EvaluateFormula(aWCommaSepRows[c]), displayTrue, displayFalse) .. " & ";
+		end
+
+		row = string.sub(row, 1, #row - 2) .. "\\\\"
+
+
+		tableContent = tableContent .. "\n" .. row
+
+	end
+
+	tex.print(tableContent);
+
+end
+
+\end{luacode*}
+
+\newcommand{\truthtable}[7]{
+	\luadirect{parse(#1, "#2", "\luaescapestring{#3}", "\luaescapestring{#4}","\luaescapestring{#5}", "\luaescapestring{#6}","\luaescapestring{#7}")}
+}
+
+\endinput
