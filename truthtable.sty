@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesPackage{truthtable}[2021/09/29 package for generating truth tables automatically using LuaTeX]
+\ProvidesPackage{truthtable}[2021/09/29 0.0.1 Package for generating truth tables automatically using LuaTeX]
 
 
 
@@ -8,7 +8,7 @@
 \@ifpackageloaded{luacode}{
 	\PackageWarningNoLine{truthtable}{Package luacode was already loaded}
 }{
-\RequirePackage{luacode}
+	\RequirePackage{luacode}
 }
 
 \begin{luacode*}
@@ -132,7 +132,7 @@ end
 \end{luacode*}
 
 \newcommand{\truthtable}[7]{
-	\luadirect{parse(#1, "#2", "\luaescapestring{#3}", "\luaescapestring{#4}","\luaescapestring{#5}", "\luaescapestring{#6}","\luaescapestring{#7}")}
+	\luadirect{parse(#1, "#2", "\luaescapestring{#3}", "\luaescapestring{#4}", "\luaescapestring{#5}", "\luaescapestring{#6}","\luaescapestring{#7}")}
 }
 
 \endinput
