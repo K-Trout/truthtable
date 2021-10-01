@@ -20,7 +20,7 @@ A small LaTeX package for generating truth tables automatically.
 
 - README.md (This file)
 - [truthtable.sty](truthtable.sty) The package file
-- [truthtable.pdf](truthtable.pdf) The compiled package documentation 
+- [truthtable.pdf](truthtable.pdf) The compiled package documentation
 - [truthtable.tex](truthtable.tex) The package documentation file
 - [res/exampletable.tex](res/exampletable.tex) Sample usage code
 - [res/exampletableoutput.tex](res/exampletableoutput.tex) Sample usage code output

@@ -17,9 +17,6 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{truthtable}[2021/10/01 0.0.1 Package for generating truth tables automatically using LuaTeX]
 
-
-
-
 \ProcessOptions\relax
 \@ifpackageloaded{luacode}{
 	\PackageWarningNoLine{truthtable}{Package luacode was already loaded}
@@ -118,7 +115,6 @@ function parse(commaSepVariables, commaSepDisplayVariables, commaSepResultRows, 
 			wCommaSepRows = string.gsub(wCommaSepRows, vrbls[ii], (string.sub(bitString,ii,ii) == "1" ) and "+" or "-" )
 		end
 
-
 		local aWVrbls = Split(string.gsub(string.gsub(wVrbls, "+", "true"),"-", "false"), ",");
 
 		local aWCommaSepRows = Split(string.gsub(string.gsub(wCommaSepRows, "+", "true"),"-", "false"), ",");
@@ -137,13 +133,10 @@ function parse(commaSepVariables, commaSepDisplayVariables, commaSepResultRows, 
 
 		row = string.sub(row, 1, #row - 2) .. "\\\\"
 
-
 		tableContent = tableContent .. "\n" .. row
-
 	end
 	
 	tex.print(tableContent);
-
 end
 
 \end{luacode*}
