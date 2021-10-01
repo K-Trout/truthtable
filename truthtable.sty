@@ -1,3 +1,19 @@
+% truthtable.sty
+%% Copyright 2021 D. Flück
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status “author-maintained”.
+% 
+% The Current Maintainer of this work is D. Flück.
+% 
+% This work consists of the file truthtable.sty.
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{truthtable}[2021/09/29 0.0.1 Package for generating truth tables automatically using LuaTeX]
 
@@ -70,9 +86,10 @@ function printTruthValue(expr, dTrue, dFalse)
 	return returnVal;
 end
 
-function parse(numberOfColumns, commaSepVariables, commaSepDisplayVariables, commaSepResultRows, commaSepResultDisplayRows, displayTrue, displayFalse)
-	local rows = ComputeRows(numberOfColumns);
+function parse(commaSepVariables, commaSepDisplayVariables, commaSepResultRows, commaSepResultDisplayRows, displayTrue, displayFalse)
 	local vrbls = Split(commaSepVariables, ",");
+	local numberOfColumns = #(vrbls);
+	local rows = ComputeRows(numberOfColumns);
 	local dVrbls = Split(commaSepDisplayVariables, ",");
 	local resRows = Split(commaSepResultRows, ",");
 	local dResRows = Split(commaSepResultDisplayRows, ",");
@@ -124,15 +141,15 @@ function parse(numberOfColumns, commaSepVariables, commaSepDisplayVariables, com
 		tableContent = tableContent .. "\n" .. row
 
 	end
-
+	
 	tex.print(tableContent);
 
 end
 
 \end{luacode*}
 
-\newcommand{\truthtable}[7]{
-	\luadirect{parse(#1, "#2", "\luaescapestring{#3}", "\luaescapestring{#4}", "\luaescapestring{#5}", "\luaescapestring{#6}","\luaescapestring{#7}")}
+\newcommand{\truthtable}[6]{
+	\luadirect{parse("#1", "\luaescapestring{#2}", "\luaescapestring{#3}", "\luaescapestring{#4}", "\luaescapestring{#5}","\luaescapestring{#6}")}
 }
 
 \endinput

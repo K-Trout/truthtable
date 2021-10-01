@@ -1,0 +1,192 @@
+\documentclass[a4paper]{article}
+\usepackage[in]{fullpage}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
+\lstset{
+    basicstyle=\footnotesize\ttfamily, % Default font
+    numbers=none, % left           % Location of line numbers
+    numberstyle=\tiny,          % Style of line numbers
+    % stepnumber=2,              % Margin between line numbers
+    numbersep=0pt, %5pt,              % Margin between line numbers and text
+    tabsize=1,                  % Size of tabs
+    extendedchars=true,
+    breaklines=true,            % Lines will be wrapped
+    % keywordstyle=\color{red}\textbf,
+    commentstyle=\color{purple},
+    identifierstyle=\color{blue},
+    frame=tlrb,
+    keywordstyle={[1]\color{red}\textbf},
+    keywordstyle={[2]\color{blue}\textbf},
+    keywordstyle={[3]\color{green}},
+    keywordstyle={[4]\textbf}, 
+    stringstyle=\color{purple}\ttfamily, % Color of strings
+    showspaces=false,
+    showtabs=false,
+    xleftmargin=5.5pt,%17pt,
+    framexleftmargin=2pt,%17pt,
+    framexrightmargin=2.5pt,
+    framexbottommargin=2pt,
+    backgroundcolor=\color[HTML]{E6E7E7},
+    showstringspaces=false,
+}
+\lstloadlanguages{ % Check documentation for further languages ...
+     [LaTeX]TeX
+}
+\DeclareCaptionFont{blue}{\color{blue}} 
+
+\captionsetup[lstlisting]{singlelinecheck=false, labelfont={blue}, textfont={blue}}
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox[cmyk]{1, 0.33, 0,0.4}{\parbox{\textwidth}{\hspace{3pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
+\usepackage[colorlinks]{hyperref}
+\hypersetup{
+    bookmarksopen=true,
+    bookmarksnumbered=true,
+    pdftitle={truthtable},
+    pdfauthor={Dominic Flück},
+    pdfsubject={truth LaTeX package},
+    pdfkeywords={truthtable,LuaLaTeX, package, documentation, LaTeX},
+    pdfdisplaydoctitle=true,
+    pdflang={en-GB},
+    pdfcreator={LuaHBTeX},
+    pdfproducer={LuaHBTeX, Version 1.13.2}}
+
+\usepackage{truthtable}
+
+\usepackage{bxtexlogo}
+\usepackage[ukenglish]{babel}
+
+\title{\texttt{truthtable}\textbf{: \LaTeX\ Package\\for automatically generated Truth Tables}}
+\author{Dominic Flück}
+\date{0.0.1 2021/10/01}
+
+\begin{document}
+	\maketitle
+
+	\begin{abstract}
+		\noindent \texttt{truthtable} is a \LaTeX\ package for creating automatically generating truth tables given a table header. It supports a number of logical operations which can be combined as needed. It's built upon the package \href{https://ctan.org/pkg/luacode}{\texttt{luacode}} and therefor has to be used with the \LuaLaTeX\ compiler.
+	\end{abstract}
+
+	\tableofcontents
+
+	\section{Introduction}
+	Tables in \LaTeX\ have the reputation of being a bit tedious. When creating a table with many cells, such as a truth table, they are not only tedious to build, but also not very readable.
+
+	To help this situation when creating a truth table for a document, this package provides a macro, which allows simply for the variables and the columns of a truth table to be defined. The package then takes care of the rest.
+
+	\section{Dependencies}
+
+	\texttt{truthtable} uses the package \href{https://ctan.org/pkg/luacode}{\texttt{luacode}} to run, as the heavy lifting of the processing is done in \emph{Lua}. 	The package checks if \href{https://ctan.org/pkg/luacode}{\texttt{luacode}} is already loaded, and if not, does so. \LuaLaTeX is required to compile the resulting documents.	
+
+	\section{Usage}
+
+	The \texttt{truthtable} package provides as of this version a single command:\\ \texttt{\textbackslash truthtable\{\emph{comma separated variables}\}\{\emph{comma separated display variables}\}\\\{\emph{comma separated statements}\}\{\emph{comma separated display statements}\}\\\{\emph{display true value}\}\{\emph{display false value}\}}
+
+	This command is placed in the normal table boilerplate. This leads to the redundant practice of defining the column count twice, once for the table environment as the column layout and once in the command by defining the variables and statements.\footnote{See \autoref{lst:exampletable} for example}
+
+	This is intentional to allow for more flexibility in customising the column layout as well as pre- and appending of further rows to the table.
+
+	\subsection{Comma separated variables}
+
+	The basic variables, for which every combination of \emph{true} and \emph{false} a row of table will be generated. The variables should be relatively simple, as they are not used for the formatting the table but simply to calculate the answers. The variables should be separated using commas. Don't use variables, which contain another variable, i.e., don't do this: \emph{\{n,An\}}.
+
+	\subsection{Comma separated display variables}
+
+	These are the display values corresponding to the \emph{Comma separated variables}. Fancy variable formatting can be applied. At least normal text and math mode seem to work.\footnote{More testing needs to be done}
+	The same number of display variables as variables is required. The comma cannot be used as a display character, as it is used as delimiter.
+
+	\subsection{Comma separated statements}
+
+	The statements using the \emph{Comma separated variables} which are used to evaluate the statements for any given combination of variables. Parentheses can be used in the normal fashion to indicate the order of combined statements. The notation for the different operations is as follows:
+
+	\subsubsection{\texttt{NOT} / Negation}
+
+	To negate a variable or statement, the exclamation point \texttt{!} is used.
+	\begin{itemize}
+		\item $\lnot A$:  \texttt{!A}
+		\item $\lnot (\lnot A)$: \texttt{!(!A)} 
+	\end{itemize} 
+
+	\subsubsection{\texttt{AND} / Conjunction}
+
+	For the conjunction of two variables or statements the and symbol \texttt{\&} is used. \textbf{The \& must not be escaped for the comma separated statements!}
+	\begin{itemize}
+		\item $A \land B$:  \texttt{A \& B}
+		\item $A \land (A \land B)$: \texttt{A \& (A \& B)} 
+	\end{itemize} 
+
+	\subsubsection{\texttt{OR} / Disjunction}
+
+	For the Disjunction of two variables or statements the vertical line character \texttt{|} is used. 
+
+	\begin{itemize}
+		\item $A \lor B$:  \texttt{A | B}
+		\item $A \lor (A \lor B)$: \texttt{A | (A | B)} 
+	\end{itemize}
+	
+	\subsubsection{$\rightarrow$ / Implication}
+
+	The implication can also be expressed. \textbf{Note that the delimiter used is the semicolon \texttt{;} and not the comma \texttt{;} ! This is because the statements are separated using the comma.}
+
+	\begin{itemize}
+		\item $A \rightarrow B$:  \texttt{>>(A; B)}
+		\item $A \rightarrow (A \lor B)$: \texttt{>>(A; (A | B))}
+		\item $A \land (A \rightarrow B)$: \texttt{A \& >>(A; B)} 
+	\end{itemize}
+
+	\subsubsection{$\leftrightarrow$ / Equality}
+
+	The equality can also be expressed. \textbf{Note that the delimiter used is the semicolon \texttt{;} and not the comma \texttt{;} ! This is because the statements are separated using the comma.} \textbf{The \texttt{\_\_} must not be escaped for the comma separated statements!}
+
+	\begin{itemize}
+		\item $A \leftrightarrow B$:  \texttt{\_\_(A; B)}
+		\item $A \leftrightarrow (A \lor B)$: \texttt{\_\_(A; (A | B))}
+		\item $A \land (A \leftrightarrow B)$: \texttt{A \& \_\_(A; B)} 
+	\end{itemize}
+
+	\subsection{Comma separated display statements}
+
+	Display statements are defined the same way as the \emph{comma separated display variables}. The comma cannot be used as a display character, as it is used as delimiter.
+
+	\subsection{Display true value}
+
+	The displaying string which will be used in the table body for \emph{true}.Normal text and math mode can be used.
+
+	\subsection{Display false value}
+
+	The displaying string which will be used in the table body for \emph{false}.Normal text and math mode can be used.
+
+	\newpage
+
+	\section{Example of use}
+
+	The code snippet seen in \autoref{lst:exampletable} is the entirety of code required to produce the truth table seen in \autoref{tab:sampletable}.\footnote{The captioning setup was omitted in the listing.}
+
+	The command generates the code seen in \autoref{lst:exampletableoutput}.
+
+	\lstinputlisting[language={[LaTeX]TeX}, label=lst:exampletable, caption=Code for an sample truth table]{exampletable.tex}
+
+	\lstinputlisting[language={[LaTeX]TeX}, label=lst:exampletableoutput, caption=Code generated by \textbackslash truthtable]{exampletableoutput.tex}
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{c|c||c|c|c|c|c}
+			\truthtable{A,B}{$A$,$B$}{!A, A & B, A | B, >>(A; B), __(A; B)}{$\lnot A$, $A \land B$, $A \lor B$, $A \rightarrow B$, $A \leftrightarrow B$}{$T$}{$F$}
+		\end{tabular}
+		\caption{Sample truth table}
+		\label{tab:sampletable}
+	\end{table}
+
+	\section{Known issues and bugs}
+
+	\begin{description}
+		\item[Stability] The Lua code of the macro is not yet error resistant. Either a table is produced or not, warnings and errors are not yet implemented. Future versions of the package will probably address this.
+		\item[Display formatting] Whilst normal text and math mode work for both headers and truth values, other text formatting such as \texttt{\textbackslash textbf} does not. It is not yet clear if this will be addressed in future versions.
+		\item[Operations] For the moment only four operations are defined. Further operations\footnote{\emph{NAND}, \emph{XOR}, \emph{etc.}} may be added in future versions. 
+	\end{description}
+
+\end{document}
