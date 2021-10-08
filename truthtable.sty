@@ -15,7 +15,7 @@
 % 
 % This work consists of the file truthtable.sty.
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesPackage{truthtable}[2021/10/01 0.0.1 Package for generating truth tables automatically using LuaTeX]
+\ProvidesPackage{truthtable}[2021/10/08 0.0.2 Package for generating truth tables automatically using LuaTeX]
 
 \ProcessOptions\relax
 \@ifpackageloaded{luacode}{
@@ -153,8 +153,6 @@ function parse(commaSepVariables, commaSepDisplayVariables, commaSepResultRows, 
 
 		tableContent = tableContent .. "\n" .. row
 	end
-	
-	print(tableContent);
 
 	tex.print(tableContent);
 end

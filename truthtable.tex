@@ -48,8 +48,8 @@
     bookmarksnumbered=true,
     pdftitle={truthtable},
     pdfauthor={Dominic Flück <K-Trout>},
-    pdfsubject={truth LaTeX package},
-    pdfkeywords={truthtable,LuaLaTeX, package, documentation, LaTeX},
+    pdfsubject={truthtable package documentation v0.0.2},
+    pdfkeywords={truthtable, LuaLaTeX, package, documentation, LaTeX},
     pdfdisplaydoctitle=true,
     pdflang={en-GB},
     pdfcreator={LuaHBTeX},
@@ -64,7 +64,7 @@
 
 \title{\texttt{truthtable}\textbf{: \LaTeX\ Package\\for automatically generated Truth Tables}}
 \author{Dominic Flück <K-Trout>}
-\date{0.0.2 2021/10/01}
+\date{0.0.2 2021/10/08}
 
 \begin{document}
 \maketitle
@@ -212,12 +212,12 @@ This package is on \emph{CTAN} (\href{https://ctan.org/pkg/truthtable}{ctan.org/
 
 \subsection{Changes}
 
-\textbf{v0.0.2 (2021/10/TODO)}
+\textbf{v0.0.2 (2021/10/08)}
 
 \begin{itemize}
-	\item Added support for \emph{XOR} and \emph{NAND}
-	\item Added some error messages when the number of arguments and display arguments don't correspond.
+	\item Added support for \emph{XOR} and \emph{NAND}.
 	\item Added definition for equivalence operation to be written as \texttt{<>(A; B)}.  \texttt{\_\_(A; B)} is still supported
+	\item Added some error messages when the number of arguments and display arguments don't correspond.
 \end{itemize}
 \textbf{v0.0.1 (2021/10/01)}
 
@@ -228,9 +228,15 @@ This package is on \emph{CTAN} (\href{https://ctan.org/pkg/truthtable}{ctan.org/
 \subsection{Known issues and bugs}
 
 \begin{description}
-	\item[Stability] The Lua code of the macro is not very error resistant. The package only checks if the same amount of working and display variables, as well as working and display statements. If a mismatch is detected, an error message is output and the package code halts. Further improvements may be undertaken in the future.
+	\item[Stability] The Lua code of the macro is not very error resistant. The package only checks if the same amount of working and display variables, as well as working and display statements are provided. If a mismatch is detected, an error message is output and the package code halts. Further improvements may be undertaken in the future.
 	\item[Display formatting] Whilst normal text and ``math'' mode work for both headers and truth values, other text formatting such as \texttt{\textbackslash textbf} does not. It is not yet clear if this will be addressed in future versions.
 	\item[Operations] For the moment seven operations are defined. Further operations may be added in future versions.
 \end{description}
+
+\newpage
+
+\section{Implementation}
+
+\lstinputlisting[language={[LaTeX]TeX}, label=lst:packagecode, caption=Source code of the truthtable package, numbers=left,xleftmargin=17pt,xrightmargin=-3.4pt,framexleftmargin=17pt, numbersep=5pt,frame=bt]{truthtable.sty}
 
 \end{document}

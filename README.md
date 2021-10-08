@@ -2,7 +2,7 @@
 
 *Copyright (C) Dominic Flück (K-Trout) 2021* <k-trout.ctan[at]protonmail[dot]ch>
 
-truthtable 2021/10/01 v0.0.1
+truthtable 2021/10/08 v0.0.2
 
 ---
 
@@ -15,6 +15,14 @@ Details: [www.latex-project.org/lppl.txt](https://www.latex-project.org/lppl.txt
 ## Info
 
 A small LaTeX package for generating truth tables automatically.
+
+## CTAN
+
+The package is available on CTAN: [ctan.org/pkg/truthtable](https://ctan.org/pkg/truthtable).
+
+## Github
+
+The package repository is on github: [github.com/K-Trout/truthtable](https://github.com/K-Trout/truthtable). For bugs reports and feature requests create an issue: [github.com/K-Trout/truthtable/issues](https://github.com/K-Trout/truthtable/issues)
 
 ## Provided files
 
