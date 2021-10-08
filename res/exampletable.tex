@@ -1,9 +1,11 @@
 \begin{table}[h]
 	\centering
-	\begin{tabular}{c|c||c|c|c|c|c}
+	\begin{tabular}{c|c||c|c|c|c|c|c|c}
 
 		% Content of table is generated using this single command.
-		\truthtable{A,B}{$A$,$B$}{!A, A & B, A | B, >>(A; B), __(A; B)}{$\lnot A$, $A \land B$, $A \lor B$, $A \rightarrow B$, $A \leftrightarrow B$}{$T$}{$F$}
+		\truthtable{A,B}{$A$,$B$}
+		{!A, A & B, A | B, ^(A; B), !&(A; B), >>(A; B), <>(A; B)}{$\lnot A$, $A \land B$, $A \lor B$,$A \veebar B$,$A | B$, $A \rightarrow B$, $A \leftrightarrow B$}
+		{$T$}{$F$}
 		
 	\end{tabular}
 \end{table}
