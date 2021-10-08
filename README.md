@@ -22,7 +22,7 @@ The package is available on CTAN: [ctan.org/pkg/truthtable](https://ctan.org/pkg
 
 ## Github
 
-The package repository is on github: [github.com/K-Trout/truthtable](https://github.com/K-Trout/truthtable). For bugs reports and feature requests create an issue: [github.com/K-Trout/truthtable/issues](https://github.com/K-Trout/truthtable/issues)
+The package repository is on github: [github.com/K-Trout/truthtable](https://github.com/K-Trout/truthtable). For bug reports and feature requests create an issue: [github.com/K-Trout/truthtable/issues](https://github.com/K-Trout/truthtable/issues)
 
 ## Provided files
 
