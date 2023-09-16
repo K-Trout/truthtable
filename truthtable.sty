@@ -15,7 +15,7 @@
 % 
 % This work consists of the file truthtable.sty.
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesPackage{truthtable}[2021/10/08 0.0.2 Package for generating truth tables automatically using LuaTeX]
+\ProvidesPackage{truthtable}[2023/09/16 0.1.0 Package for generating truth tables automatically using LuaTeX]
 
 \ProcessOptions\relax
 \@ifpackageloaded{luacode}{
@@ -92,9 +92,9 @@ function printTruthValue(expr, dTrue, dFalse)
 	return returnVal;
 end
 
-function parse(commaSepVariables, commaSepDisplayVariables, commaSepResultRows, commaSepResultDisplayRows, displayTrue, displayFalse)
+function parse(commaSepVariables, commaSepDisplayVariables, commaSepResultRows, commaSepResultDisplayRows, displayTrue, displayFalse, order)
 	
-	print("\n\ntruthtable v0.0.2\n")
+	print("\n\ntruthtable v0.1.0\n")
 
 	local vrbls = Split(commaSepVariables, ",");
 	local numberOfColumns = #(vrbls);
@@ -103,7 +103,7 @@ function parse(commaSepVariables, commaSepDisplayVariables, commaSepResultRows, 
 	local resRows = Split(commaSepResultRows, ",");
 	local dResRows = Split(commaSepResultDisplayRows, ",");
 
-	local dHeader = string.gsub(commaSepDisplayVariables, ",", " & ") .. " & " .. string.gsub(commaSepResultDisplayRows, ",", " & ") .. " \\\\ \\hline";
+	local dHeader = string.gsub(commaSepDisplayVariables, ",", " & ") .. " & " .. string.gsub(commaSepResultDisplayRows, ",", " & ") ..  [[ \\ \hline]];
 
 	if (#(dVrbls) ~= #(vrbls)) then
 		print("Error: The number of variables does not match the number of display variables.");
@@ -115,9 +115,24 @@ function parse(commaSepVariables, commaSepDisplayVariables, commaSepResultRows, 
 		return
 	end
 
-	local tableContent = dHeader;
+	tex.print(dHeader);
 
-	for i = (rows - 1),0,-1
+	
+	local startVal;
+	local endVal;
+	local stepVal;
+
+	if order == "asc" then
+		startVal = 0;
+		endVal = rows - 1;
+		stepVal = 1;
+	else 
+		startVal = rows - 1;
+		endVal = 0;
+		stepVal = -1;
+	end
+
+	for i = startVal,endVal,stepVal
 	do
 		local bitString = toBits(i);
 
@@ -149,18 +164,20 @@ function parse(commaSepVariables, commaSepDisplayVariables, commaSepResultRows, 
 			row = row .. printTruthValue(EvaluateFormula(aWCommaSepRows[c]), displayTrue, displayFalse) .. " & ";
 		end
 
-		row = string.sub(row, 1, #row - 2) .. "\\\\"
+		row = string.sub(row, 1, #row - 2) .. [[\\]];
 
-		tableContent = tableContent .. "\n" .. row
+		tex.print(row);
 	end
-
-	tex.print(tableContent);
 end
 
 \end{luacode*}
 
 \newcommand{\truthtable}[6]{
-	\luadirect{parse("#1", "\luaescapestring{#2}", "\luaescapestring{#3}", "\luaescapestring{#4}", "\luaescapestring{#5}","\luaescapestring{#6}")}
+	\luadirect{parse("#1", "\luaescapestring{#2}", "\luaescapestring{#3}", "\luaescapestring{#4}", "\luaescapestring{#5}","\luaescapestring{#6}", "\luaescapestring{desc}")}
+}
+
+\newcommand{\truthtableasc}[6]{
+	\luadirect{parse("#1", "\luaescapestring{#2}", "\luaescapestring{#3}", "\luaescapestring{#4}", "\luaescapestring{#5}","\luaescapestring{#6}", "\luaescapestring{asc}")}
 }
 
 \endinput

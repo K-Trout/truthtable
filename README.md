@@ -1,8 +1,8 @@
 # truthtable
 
-*Copyright (C) Dominic Flück (K-Trout) 2021* <k-trout.ctan[at]protonmail[dot]ch>
+*Copyright (C) Dominic Flück (K-Trout) 2021-2023* <k-trout.ctan[at]protonmail[dot]ch>
 
-truthtable 2021/10/08 v0.0.2
+truthtable 2023/09/16 v0.1.0
 
 ---
 
@@ -20,9 +20,9 @@ A small LaTeX package for generating truth tables automatically.
 
 The package is available on CTAN: [ctan.org/pkg/truthtable](https://ctan.org/pkg/truthtable).
 
-## Github
+## GitHub
 
-The package repository is on Github: [github.com/K-Trout/truthtable](https://github.com/K-Trout/truthtable). For bug reports and feature requests create an issue: [github.com/K-Trout/truthtable/issues](https://github.com/K-Trout/truthtable/issues)
+The package repository is on GitHub: [github.com/K-Trout/truthtable](https://github.com/K-Trout/truthtable). For bug reports and feature requests create an issue: [github.com/K-Trout/truthtable/issues](https://github.com/K-Trout/truthtable/issues)
 
 ## Provided files
 

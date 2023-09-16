@@ -5,15 +5,13 @@
 \usepackage{xcolor}
 \usepackage{caption}
 \lstset{
-    basicstyle=\footnotesize\ttfamily, % Default font
-    numbers=none, % left           % Location of line numbers
-    numberstyle=\tiny,          % Style of line numbers
-    % stepnumber=2,              % Margin between line numbers
-    numbersep=0pt, %5pt,              % Margin between line numbers and text
-    tabsize=1,                  % Size of tabs
+    basicstyle=\footnotesize\ttfamily,
+    numbers=none,
+    numberstyle=\tiny,
+    numbersep=0pt,
+    tabsize=1,
     extendedchars=true,
-    breaklines=true,            % Lines will be wrapped
-    % keywordstyle=\color{red}\textbf,
+    breaklines=true,
     commentstyle=\color{purple},
     identifierstyle=\color{blue},
     frame=tlrb,
@@ -21,17 +19,17 @@
     keywordstyle={[2]\color{blue}\textbf},
     keywordstyle={[3]\color{green}},
     keywordstyle={[4]\textbf}, 
-    stringstyle=\color{purple}\ttfamily, % Color of strings
+    stringstyle=\color{purple}\ttfamily,
     showspaces=false,
     showtabs=false,
-    xleftmargin=5.5pt,%17pt,
-    framexleftmargin=2pt,%17pt,
+    xleftmargin=5.5pt,
+    framexleftmargin=2pt,
     framexrightmargin=2.5pt,
     framexbottommargin=2pt,
     backgroundcolor=\color[HTML]{E6E7E7},
     showstringspaces=false,
 }
-\lstloadlanguages{ % Check documentation for further languages ...
+\lstloadlanguages{
     [LaTeX]TeX
 }
 \DeclareCaptionFont{blue}{\color{blue}} 
@@ -48,12 +46,11 @@
     bookmarksnumbered=true,
     pdftitle={truthtable},
     pdfauthor={Dominic Flück <K-Trout>},
-    pdfsubject={truthtable package documentation v0.0.2},
+    pdfsubject={truthtable package documentation v0.1.0},
     pdfkeywords={truthtable, LuaLaTeX, package, documentation, LaTeX},
     pdfdisplaydoctitle=true,
     pdflang={en-GB},
-    pdfcreator={LuaHBTeX},
-    pdfproducer={LuaHBTeX, Version 1.13.2}}
+    pdfcreator={LuaHBTeX}}
 
 \usepackage{truthtable}
 
@@ -64,13 +61,13 @@
 
 \title{\texttt{truthtable}\textbf{: \LaTeX\ Package\\for automatically generated Truth Tables}}
 \author{Dominic Flück <K-Trout>}
-\date{0.0.2 2021/10/08}
+\date{0.1.0 2023/09/16}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-	\noindent \texttt{truthtable} is a \LaTeX\ package for creating automatically generating truth tables given a table header. It supports a number of logical operations which can be combined as needed. It's built upon the package \href{https://ctan.org/pkg/luacode}{\texttt{luacode}} and therefore has to be used with the \LuaLaTeX\ compiler.
+    \noindent \texttt{truthtable} is a \LaTeX\ package for creating automatically generating truth tables given a table header. It supports a number of logical operations which can be combined as needed. It's built upon the package \href{https://ctan.org/pkg/luacode}{\texttt{luacode}} and therefore has to be used with the \LuaLaTeX\ compiler.
 \end{abstract}
 
 \tableofcontents
@@ -86,12 +83,23 @@ To help this situation when creating a truth table for a document, this package 
 
 \section{Usage}
 
-The \texttt{truthtable} package provides as of this version a single command:\bigskip\\
-\noindent\texttt{\textbackslash truthtable\{\emph{comma separated variables}\}\{\emph{comma separated display variables}\}\\\{\emph{comma separated statements}\}\{\emph{comma separated display statements}\}\\\{\emph{display true value}\}\{\emph{display false value}\}}
-\bigskip\\
-The command positions in the normal table boilerplate. This leads to the redundant practice of defining the column count twice, once for the table environment as the column layout and once in the command by defining the variables and statements.\footnote{See \autoref{lst:exampletable} for example}
+The \texttt{truthtable} package provides two commands: \texttt{\textbackslash truthtable} and \texttt{\textbackslash truthtableasc}. Both commands take the same arguments, but generate the table in different order.
+
+They position in the normal table boilerplate. This leads to the redundant practice of defining the column count twice, once for the table environment as the column layout and once in the command by defining the variables and statements.\footnote{See \autoref{lst:exampletable} for example}
 
 This is intentional to allow for more flexibility in customising the column layout as well as pre- and appending of further rows to the table.
+
+\subsection{\texttt{\textbackslash truthtable}}
+\noindent\texttt{\textbackslash truthtable\{\emph{comma separated variables}\}\{\emph{comma separated display variables}\}\\\{\emph{comma separated statements}\}\{\emph{comma separated display statements}\}\\\{\emph{display true value}\}\{\emph{display false value}\}}\bigskip
+
+This command generates the table in descending value of the variables, from all variables being \emph{true} to being \emph{false}.
+
+\subsection{\texttt{\textbackslash truthtableasc}}
+
+\noindent\texttt{\textbackslash truthtableasc\{\emph{comma separated variables}\}\{\emph{comma separated display variables}\}\\\{\emph{comma separated statements}\}\{\emph{comma separated display statements}\}\\\{\emph{display true value}\}\{\emph{display false value}\}}
+\bigskip
+
+This command generates the table in ascending value of the variables, from all variables being \emph{false} to being \emph{true}.
 
 \subsection{Comma separated variables}
 
@@ -110,16 +118,16 @@ The statements using the \emph{Comma separated variables} which are used to eval
 
 To negate a variable or statement, the exclamation point \texttt{!} is used.
 \begin{itemize}
-	\item $\lnot A$:  \texttt{!A}
-	\item $\lnot (\lnot A)$: \texttt{!(!A)}
+    \item $\lnot A$:  \texttt{!A}
+    \item $\lnot (\lnot A)$: \texttt{!(!A)}
 \end{itemize}
 
 \subsubsection{\texttt{AND} / Conjunction}
 
 For the conjunction of two variables or statements the and symbol \texttt{\&} is used. \textbf{The \& must not be escaped for the comma separated statements!}
 \begin{itemize}
-	\item $A \land B$:  \texttt{A \& B}
-	\item $A \land (A \land B)$: \texttt{A \& (A \& B)}
+    \item $A \land B$:  \texttt{A \& B}
+    \item $A \land (A \land B)$: \texttt{A \& (A \& B)}
 \end{itemize}
 
 \subsubsection{\texttt{OR} / Disjunction}
@@ -127,8 +135,8 @@ For the conjunction of two variables or statements the and symbol \texttt{\&} is
 For the Disjunction of two variables or statements the vertical line character \texttt{|} is used.
 
 \begin{itemize}
-	\item $A \lor B$:  \texttt{A | B}
-	\item $A \lor (A \lor B)$: \texttt{A | (A | B)}
+    \item $A \lor B$:  \texttt{A | B}
+    \item $A \lor (A \lor B)$: \texttt{A | (A | B)}
 \end{itemize}
 
 \subsubsection{\texttt{XOR} /  Exclusive disjunction}
@@ -136,8 +144,8 @@ For the Disjunction of two variables or statements the vertical line character \
 The exclusive disjunction (\texttt{XOR}) is written in parentheses preceded by the hat operator. \textbf{Note that the delimiter used is the semicolon \texttt{;} and not the comma \texttt{,} ! This is because the statements are separated using the comma.}
 
 \begin{itemize}
-	\item $A \veebar B$:  \texttt{\^\ (A; B)}
-	\item $A \veebar (A \lor B)$: \texttt{\^\ (A; (A | B))}
+    \item $A \veebar B$:  \texttt{\^\ (A; B)}
+    \item $A \veebar (A \lor B)$: \texttt{\^\ (A; (A | B))}
 \end{itemize}
 
 \subsubsection{\texttt{NAND} / Negated conjunction}
@@ -145,28 +153,28 @@ The exclusive disjunction (\texttt{XOR}) is written in parentheses preceded by t
 The \texttt{NAND} operation is written in parentheses preceded by the the \texttt{NOT} and the \texttt{AND} operator (\texttt{!\&}). \textbf{Note that the delimiter used is the semicolon \texttt{;} and not the comma \texttt{,} ! This is because the statements are separated using the comma.}
 
 \begin{itemize}
-	\item $A | B$:  \texttt{!\&(A; B)}
-	\item $A | (A \lor B)$: \texttt{!\&(A; (A | B))}
+    \item $A | B$:  \texttt{!\&(A; B)}
+    \item $A | (A \lor B)$: \texttt{!\&(A; (A | B))}
 \end{itemize}
 
-\subsubsection{$\rightarrow$ / Implication}
+\subsubsection{\texorpdfstring{$\rightarrow$ / }{}Implication}
 
 The implication can also be expressed. \textbf{Note that the delimiter used is the semicolon \texttt{;} and not the comma \texttt{,} ! This is because the statements are separated using the comma.}
 
 \begin{itemize}
-	\item $A \rightarrow B$:  \texttt{>>(A; B)}
-	\item $A \rightarrow (A \lor B)$: \texttt{>>(A; (A | B))}
-	\item $A \land (A \rightarrow B)$: \texttt{A \& >>(A; B)}
+    \item $A \rightarrow B$:  \texttt{>>(A; B)}
+    \item $A \rightarrow (A \lor B)$: \texttt{>>(A; (A | B))}
+    \item $A \land (A \rightarrow B)$: \texttt{A \& >>(A; B)}
 \end{itemize}
 
-\subsubsection{$\leftrightarrow$ / Equality}
+\subsubsection{\texorpdfstring{$\leftrightarrow$ / }{}Equality}
 
 The equality can also be expressed. Since version 0.0.2 this command can also be expressed as \texttt{<>(A;~B)}. The previous definition\footnote{The equality operation was defined this way in v0.0.1} of \texttt{\_\_(A;~B)} also works. \textbf{Note that the delimiter used is the semicolon \texttt{;} and not the comma \texttt{,} ! This is because the statements are separated using the comma.} \textbf{The \texttt{\_\_} must not be escaped for the comma separated statements!}
 
 \begin{itemize}
-	\item $A \leftrightarrow B$:  \texttt{\_\_(A; B)} = \texttt{<>(A; B)}
-	\item $A \leftrightarrow (A \lor B)$: \texttt{\_\_(A; (A | B))} = \texttt{<>(A; (A | B))}
-	\item $A \land (A \leftrightarrow B)$: \texttt{A \& \_\_(A; B)} = \texttt{A \& <>(A; B)}
+    \item $A \leftrightarrow B$:  \texttt{\_\_(A; B)} = \texttt{<>(A; B)}
+    \item $A \leftrightarrow (A \lor B)$: \texttt{\_\_(A; (A | B))} = \texttt{<>(A; (A | B))}
+    \item $A \land (A \leftrightarrow B)$: \texttt{A \& \_\_(A; B)} = \texttt{A \& <>(A; B)}
 \end{itemize}
 
 \subsection{Comma separated display statements}
@@ -183,7 +191,7 @@ The displaying string which will be used in the table body for \emph{false}. Nor
 
 \section{Example of use}
 
-The code snippet seen in \autoref{lst:exampletable} is the entirety of code required to produce the truth table seen in \autoref{tab:sampletable}.\footnote{The captioning setup was omitted in the listing.}
+The code snippet seen in \autoref{lst:exampletable} is the entirety of code required to produce the truth table seen in \autoref{tab:sampletable}.\footnote{The captioning setup was omitted in the listing.} The code for the ascending truth table as seen in \autoref{tab:sampletableasc} is identical, except for the command used being \texttt{\textbackslash truthtableasc} instead of \texttt{\textbackslash truthtable}.
 
 The command generates the code seen in \autoref{lst:exampletableoutput}.
 
@@ -191,15 +199,27 @@ The command generates the code seen in \autoref{lst:exampletableoutput}.
 
 \lstinputlisting[language={[LaTeX]TeX}, label=lst:exampletableoutput, caption=Code generated by \textbackslash truthtable]{res/exampletableoutput.tex}
 
-\begin{table}[h]
-	\centering
-	\begin{tabular}{c|c||c|c|c|c|c|c|c}
-		\truthtable{A,B}{$A$,$B$}
-		{!A, A & B, A | B, ^(A; B), !&(A; B), >>(A; B), <>(A; B)}{$\lnot A$, $A \land B$, $A \lor B$,$A \veebar B$,$A | B$, $A \rightarrow B$, $A \leftrightarrow B$}
-		{$T$}{$F$}
-	\end{tabular}
-	\caption{Sample truth table}
-	\label{tab:sampletable}
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{c|c||c|c|c|c|c|c|c}
+        \truthtable{A,B}{$A$,$B$}
+        {!A, A & B, A | B, ^(A; B), ! & (A; B), >>(A; B), <>(A; B)}{$\lnot A$, $A \land B$, $A \lor B$,$A \veebar B$,$A | B$, $A \rightarrow B$, $A \leftrightarrow B$}
+        {$T$}{$F$}
+    \end{tabular}
+    \caption{Sample truth table}
+    \label{tab:sampletable}
+\end{table}
+
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{c|c||c|c|c|c|c|c|c}
+        \truthtableasc{A,B}{$A$,$B$}
+        {!A, A & B, A | B, ^(A; B), ! & (A; B), >>(A; B), <>(A; B)}{$\lnot A$, $A \land B$, $A \lor B$,$A \veebar B$,$A | B$, $A \rightarrow B$, $A \leftrightarrow B$}
+        {$T$}{$F$}
+    \end{tabular}
+    \caption{Sample truth table in ascending order}
+    \label{tab:sampletableasc}
 \end{table}
 
 \newpage
@@ -208,29 +228,34 @@ The command generates the code seen in \autoref{lst:exampletableoutput}.
 
 \subsection{Repository}
 
-This package is on \emph{CTAN} (\href{https://ctan.org/pkg/truthtable}{ctan.org/pkg/truthtable}). The repository of the package is \href{https://github.com/K-Trout/truthtable}{github.com/K-Trout/truthtable}. For bug reports and feature requests create an issue on github: \href{https://github.com/K-Trout/truthtable/issues}{github.com/K-Trout/truthtable/issues}.
+This package is on \emph{CTAN} (\href{https://ctan.org/pkg/truthtable}{ctan.org/pkg/truthtable}). The repository of the package is \href{https://github.com/K-Trout/truthtable}{github.com/K-Trout/truthtable}. For bug reports and feature requests create an issue on GitHub: \href{https://github.com/K-Trout/truthtable/issues}{github.com/K-Trout/truthtable/issues}.
 
 \subsection{Changes}
 
+\textbf{v0.1.0 (2023/09/16)}
+\begin{itemize}
+    \item Added the \texttt{\textbackslash truthtableasc} command to generate the table in ascending order. Thanks to \emph{slnkahveci} on GitHub for the feature request.
+    \item Fixed alignment issues in the first column of the table. Thanks to \emph{cpierquet} on GitHub for the bug report.
+\end{itemize}
 \textbf{v0.0.2 (2021/10/08)}
 
 \begin{itemize}
-	\item Added support for \emph{XOR} and \emph{NAND}.
-	\item Added definition for equivalence operation to be written as \texttt{<>(A; B)}.  \texttt{\_\_(A; B)} is still supported
-	\item Added some error messages when the number of arguments and display arguments don't correspond.
+    \item Added support for \emph{XOR} and \emph{NAND}.
+    \item Added definition for equivalence operation to be written as \texttt{<>(A; B)}.  \texttt{\_\_(A; B)} is still supported
+    \item Added some error messages when the number of arguments and display arguments don't correspond.
 \end{itemize}
 \textbf{v0.0.1 (2021/10/01)}
 
 \begin{itemize}
-	\item Initial release
+    \item Initial release
 \end{itemize}
 
 \subsection{Known issues and bugs}
 
 \begin{description}
-	\item[Stability] The Lua code of the macro is not very error resistant. The package only checks if the same amount of working and display variables, as well as working and display statements are provided. If a mismatch is detected, an error message is output and the package code halts. Further improvements may be undertaken in the future.
-	\item[Display formatting] Whilst normal text and ``math'' mode work for both headers and truth values, other text formatting such as \texttt{\textbackslash textbf} does not. It is not yet clear if this will be addressed in future versions.
-	\item[Operations] For the moment seven operations are defined. Further operations may be added in future versions.
+    \item[Stability] The Lua code of the macro is not very error resistant. The package only checks if the same amount of working and display variables, as well as working and display statements are provided. If a mismatch is detected, an error message is output and the package code halts. Further improvements may be undertaken in the future.
+    \item[Display formatting] Whilst normal text and ``math'' mode work for both headers and truth values, other text formatting such as \texttt{\textbackslash textbf} does not. It is not yet clear if this will be addressed in future versions.
+    \item[Operations] For the moment seven operations are defined. Further operations may be added in future versions.
 \end{description}
 
 \newpage
