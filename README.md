@@ -1,8 +1,8 @@
 # truthtable
 
-*Copyright (C) Dominic Flück (K-Trout) 2021* <k-trout.ctan[at]protonmail[dot]ch>
+*Copyright (C) Dominic Flück (K-Trout) 2021-2023* <k-trout.ctan[at]protonmail[dot]ch>
 
-truthtable 2021/10/08 v0.0.2
+truthtable 2023/09/16 v0.1.0
 
 ---
 
